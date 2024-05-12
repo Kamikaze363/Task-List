@@ -9,7 +9,7 @@ use App\Models\Task;
 Route::get('/tasks', function () {
 
     return view('index', [
-        'tasks' => Task::latest()->get()
+        'tasks' => Task::latest()->paginate(10)
     ]);
 
 })->name('tasks.index');
@@ -65,6 +65,14 @@ Route::delete('/tasks/{task}', function (Task $task){
     return redirect()->route('tasks.index')
         ->with('success', 'Task deleted successfully!');
 })->name('tasks.destroy');
+
+Route::put('Tasks/{task}/toggle-complete', function (Task $task){
+
+    $task->toggleComplete();
+
+    return redirect()->back()
+        ->with('success', 'Task updated successfully!');
+})->name('tasks.toggle-complete');
 
 //Get gets data from the server
 //Post sends data to the server
